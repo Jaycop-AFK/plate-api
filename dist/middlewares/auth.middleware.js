@@ -14,27 +14,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const user_model_1 = require("../models/user.model");
+const user_model_1 = __importDefault(require("../models/user.model"));
 dotenv_1.default.config();
 const authenticateToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-    if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
+    try {
+        const authHeader = req.headers["authorization"];
+        const token = authHeader && authHeader.split(" ")[1];
+        if (!token) {
+            return res.status(401).json({ message: "ไม่พบ Token" });
+        }
+        jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET, (err, decode) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                return res.status(403).json({ message: "คีย์หมดอายุ" });
+            }
+            let user = yield user_model_1.default.findById(decode._id);
+            if (!user || user.deletedAt) {
+                return res.status(403).json({ message: "ไม่พบผู้ใช้งาน" });
+            }
+            req.user = user;
+            next();
+        }));
     }
-    jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET, (err, decode) => __awaiter(void 0, void 0, void 0, function* () {
-        if (err) {
-            return res.status(403).json({ message: "Token is expired" });
-        }
-        let findUser = yield user_model_1.User.findOne({
-            where: { id: decode.id },
-        });
-        if (!findUser) {
-            return res.status(403).json({ message: "User Not Found" });
-        }
-        delete findUser.dataValues.hashedPassword;
-        req.user = findUser.dataValues;
-        next();
-    }));
+    catch (err) {
+        return res.status(400).json({ message: "เกิดข้อผิดพลาดจากระบบ" });
+    }
 });
 exports.default = { authenticateToken };

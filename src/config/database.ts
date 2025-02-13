@@ -1,11 +1,17 @@
-import {Sequelize} from 'sequelize';
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
-export const sequelize = new Sequelize({
-  dialect: "mysql",
-  host: process.env.MYSQL_HOST!,
-  username: process.env.MYSQL_USERNAME!,
-  password: process.env.MYSQL_PASSWORD!,
-  database: process.env.MYSQL_DATABASE!,
-});
+const { MONGODB_URL } = process.env;
+
+(async () => {
+  try {
+    mongoose.set("strictQuery", false);
+    await mongoose.connect(MONGODB_URL!);
+    console.log("Successfully connected to database");
+  } catch (error) {
+    console.log("database connection failed. exiting now...");
+    console.error(error);
+    process.exit(1);
+  }
+})();

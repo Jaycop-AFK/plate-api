@@ -1,9 +1,19 @@
 import { NextFunction, Request, Response } from "express";
+import { Types } from 'mongoose';
+
+export interface IOwnerCarCreateRequest {
+    userId: number;
+    license_plate: string;
+    name: string;   
+    phoneNumber: string;
+}
 
 export interface IOwnerCar {
-    id?: number;
+    id?: Types.ObjectId | undefined;
     userId: number;
-    carId: number;
+    license_plate: string;
+    name: string;
+    phoneNumber: string;
 }
 
 export interface IOwnerCarRequest extends Request {

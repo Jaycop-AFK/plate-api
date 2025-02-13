@@ -1,10 +1,5 @@
 import { NextFunction, Response } from "express";
-import { IUser, RequestAndUser } from "../interfaces/user.interface";
-import dotenv from "dotenv";
-import { User } from "../models/user.model";
-import { Model } from "sequelize";
-
-dotenv.config();
+import { RequestAndUser } from "../interfaces/user.interface";
 
 const accessPermission = async (
   req: RequestAndUser,
@@ -13,13 +8,15 @@ const accessPermission = async (
 ) => {
   try {
     const user = req.user!;
-    const { id }: { id: number } = req.body;
-    if (user.id !== id) {
-      return res.status(400).json({ message: "This service for admin" });
+    const { _id }: { _id: string } = req.body;
+
+    if (user._id && user._id.toString() !== _id.toString()) {
+      return res.status(403).json({ message: "This service is for admins only" });
     }
 
     next();
   } catch (error) {
+    console.error("Access permission error:", error);
     return res.status(500).json({ message: "Something went wrong" });
   }
 };

@@ -10,8 +10,24 @@ const router = (0, express_1.Router)();
 router.post("/register", user_controller_1.default.register);
 router.post("/login", user_controller_1.default.login);
 router.get("/self", auth_middleware_1.default.authenticateToken, user_controller_1.default.self);
-router.get("/", auth_middleware_1.default.authenticateToken, user_controller_1.default.getUsers);
-router.get("/:id", auth_middleware_1.default.authenticateToken, user_controller_1.default.getUserById);
-router.put("/:id", auth_middleware_1.default.authenticateToken, user_controller_1.default.updateUser);
-router.delete("/:id", auth_middleware_1.default.authenticateToken, user_controller_1.default.deleteUser);
+// router.get(
+//   "/",
+//   authMiddleware.authenticateToken as Application,
+//   userController.getUsers as Application
+// );
+// router.get(
+//   "/:id",
+//   authMiddleware.authenticateToken as Application,
+//   userController.getUserById as Application
+// );
+// router.put(
+//   "/:id",
+//   authMiddleware.authenticateToken as Application,
+//   userController.updateUser as Application
+// );
+// router.delete(
+//   "/:id",
+//   authMiddleware.authenticateToken as Application,
+//   userController.deleteUser as Application
+// );
 exports.default = router;

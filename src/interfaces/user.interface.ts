@@ -1,13 +1,25 @@
 import { NextFunction, Request, Response } from "express";
+import { Types } from 'mongoose';
+
+export interface IUserCreateRequest {
+  username: string;
+  password: string;
+}
+
+export interface IUserLoginRequest {
+  username: string;
+  password: string;
+}
 
 export interface IUser {
-  id: number;
+  _id: Types.ObjectId | undefined;
   username: string;
 
   hashedPassword?: string;
   
   createdAt: Date;
   updatedAt: Date;
+  deletedAt: Date;
 }
 
 

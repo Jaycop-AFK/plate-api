@@ -8,22 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 const accessPermission = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = req.user;
-        const { id } = req.body;
-        if (user.id !== id) {
-            return res.status(400).json({ message: "This service for admin" });
+        const { _id } = req.body;
+        if (user._id && user._id.toString() !== _id.toString()) {
+            return res.status(403).json({ message: "This service is for admins only" });
         }
         next();
     }
     catch (error) {
+        console.error("Access permission error:", error);
         return res.status(500).json({ message: "Something went wrong" });
     }
 });

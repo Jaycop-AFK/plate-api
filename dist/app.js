@@ -15,8 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
-const database_1 = require("./config/database");
+require("./config/database");
 const user_route_1 = __importDefault(require("./routes/user.route"));
+const ownerCar_route_1 = __importDefault(require("./routes/ownerCar.route"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -25,14 +26,13 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
     res.send("api is ready!!!");
 });
-// Middleware to parse JSON payloads
 app.use(express_1.default.json());
-app.post('/', (req, res) => {
-    console.log(req.body); // Log the received JSON data
+app.post('/checkAndRecordEntry', (req, res) => {
+    console.log(req.body);
     res.send('Data received successfully!');
 });
 app.use("/users", user_route_1.default);
+app.use("/ownerCars", ownerCar_route_1.default);
 app.listen(process.env.PORT, () => __awaiter(void 0, void 0, void 0, function* () {
-    yield database_1.sequelize.sync();
     console.log(`Server is running at http://localhost:${process.env.PORT}`);
 }));

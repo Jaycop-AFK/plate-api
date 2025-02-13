@@ -1,22 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OwnerCar = void 0;
-const sequelize_1 = require("sequelize");
-const database_1 = require("../config/database");
-exports.OwnerCar = database_1.sequelize.define("OwnerCar", {
-    id: {
-        type: sequelize_1.DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    name: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        field: "name",
-    },
-    phoneNumber: {
-        type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
-        field: "phoneNumber",
-    },
+const mongoose_1 = __importDefault(require("mongoose"));
+const ownerCarSchema = new mongoose_1.default.Schema({
+    license_plate: { type: String, required: true },
+    name: { type: String, required: true },
+    phoneNumber: { type: String, required: true }
 });
+const OwnerCarModel = mongoose_1.default.model("OwnerCar", ownerCarSchema);
+exports.default = OwnerCarModel;

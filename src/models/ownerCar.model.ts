@@ -1,22 +1,13 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config/database";
+import mongoose, { Schema } from "mongoose";
+import { IOwnerCar } from "../interfaces/ownerCar.interface";
 
-
-export const OwnerCar = sequelize.define("OwnerCar", {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "name",
-        
-    },
-    phoneNumber: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: "phoneNumber",
-    },
+const ownerCarSchema = new mongoose.Schema({
+  
+  license_plate: { type: String, required: true },
+  name: { type: String, required: true },
+  phoneNumber: { type: String, required: true }
 });
+
+const OwnerCarModel = mongoose.model<IOwnerCar>("OwnerCar", ownerCarSchema);
+
+export default OwnerCarModel;
